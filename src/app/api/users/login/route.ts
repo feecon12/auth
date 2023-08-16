@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
         const { email, password } = reqBody;
 
         console.log(reqBody);
+        console.log('Requested')
 
         //check if user exists
         const user = await User.findOne({ email });
@@ -47,6 +48,9 @@ export async function POST(request: NextRequest) {
             httpOnly: true,
         
         });
+
+        return Response;
+
     } catch (error:any) {
         return NextResponse.json({ error: error.message },
         {status:500})

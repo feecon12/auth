@@ -1,30 +1,31 @@
 "use client"
+
 import Link from 'next/link'
-import React, { useEffect } from 'react'
+import React, { useState,useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast';
 import axios from 'axios'
 
-export default function LogInPage(){
+export default function LogInPage() {
 
   const router = useRouter();
-  const [user, setUser] = React.useState({
+  const [user, setUser] = useState({
     email: "",
     password: "",
   });
 
-  const [buttonDisabled, setButtonDisabled] = React.useState(false);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   const onLogin = async () => {
     try {
       setLoading(true);
-      const response = await axios.post("api/users/login", user);
+      const response = await axios.post("api/users/login", user);   
       console.log("Login success", response.data);
       toast.success("Login Success");
       router.push("/profile");
-    } catch (error:any) {
+    } catch (error: any) {
       console.log("Login Failed", error.message);
       toast.error(error.message);
     } finally {
@@ -41,41 +42,55 @@ export default function LogInPage(){
     }
   }, [user]);
 
+
+
+
   return (
     <>
-    
-      <div className = "flex flex-col items-center justify-center min-h-screen py-2">
-        <h1>{ loading?"Processing":"LogIn"}</h1>
-        <hr/>
-        
-        <label htmlFor = "email"> email </label>
-        <input 
-          className='p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black'
+      <div className='grid grid-cols-2'>
+        <form className="flex flex-col items-center justify-center min-h-screen text-dark">
+          <h1 className='p-2 text-2xl'>{loading ? "Processing" : "LogIn"}</h1>
+          <hr />
+
+          <label htmlFor="email"> Email </label>
+          <input
+            className='p-2 mb-4 border rounded-lg
+             focus:outline-none '
             id="email"
             type="text"
-          value={user.email}
-          onChange={(e) => setUser({ ...user, email: e.target.value })}
-          placeholder='email'
-        />
-        
-        <label htmlFor = "password"> password </label>
-        <input 
-          className='p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 text-black'
+            value={user.email}
+            onChange={(e) => setUser({ ...user, email: e.target.value })}
+            placeholder='email'
+          />
+
+          <label htmlFor="password"> Password </label>
+          <input
+            className='p-2 mb-4 border rounded-lg focus:outline-none '
             id="password"
             type="password"
-          value={user.password}
-          onChange={(e) => setUser({ ...user, password: e.target.value })}
-          placeholder='password'
-        />
+            value={user.password}
+            onChange={(e) => setUser({ ...user, password: e.target.value })}
+            placeholder='password'
+          />
 
-        <button
-          onClick={onLogin}
-          className='p-2 border mb-4 rounded-lg focus:outline-none focus:outline-gray-600'
-        >Login here</button>
-        <Link href={'/signup'}>New user? Signup here</Link>
-          
+          <button
+            onClick={onLogin}
+            className='p-2 border mb-4 rounded-lg bg-light text-dark hover:bg-dark hover:text-light  focus:outline-none focus:outline-gray-600  '
+          >Login here</button>
+          <Link href={'/signup'} >New user? <span className='hover:underline hover:underline-offset-3'>Signup here</span></Link>
+
+        </form>
+
+        <div className='bg-dark items-center flex justify-center text-secondary'>
+
+        </div>
+
+
+
       </div>
-    
-    </> 
+
+
+
+    </>
   )
 }

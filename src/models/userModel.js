@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     },
     isAdmin: {
         type: Boolean,
-        defailt:false,
+        default:false,
     },
     forgotPasswordToken: String,
     forgotPasswordTokenExpiry: Date,
